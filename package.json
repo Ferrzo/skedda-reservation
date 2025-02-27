@@ -1,0 +1,15 @@
+{
+  "name": "skedda-puppeteer",
+  "version": "1.0.0",
+  "description": "puppeteer for skedda reservation system",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "puppeteer": "^24.3.0"
+  }
+}
