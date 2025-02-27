@@ -126,6 +126,5 @@ const COOKIES = [
   // Wait for the confirmation message
   await page.waitForSelector(".alert.alert-success");
   console.log("Booking confirmed!");
-
   await browser.close();
 })();
