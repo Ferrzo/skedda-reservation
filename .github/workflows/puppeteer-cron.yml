@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Puppeteer script
-        run: node index.js
+        run: node index.ts
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
           PUPPETEER_EXECUTABLE_PATH: "/usr/bin/google-chrome-stable"
