@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const platformUrl = `https://${process.env.DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-02-28`;
+const platformUrl = `https://${process.env.DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-04-03`; // TODO: change this to auto date
 
 const COOKIES = [
   {
@@ -17,7 +17,7 @@ const COOKIES = [
   },
 ];
 (async () => {
-  const browser = await puppeteer.launch({ headless: true }); // TODO: headless: true
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   // Set auth cookies
@@ -126,6 +126,5 @@ const COOKIES = [
   // Wait for the confirmation message
   await page.waitForSelector(".alert.alert-success");
   console.log("Booking confirmed!");
-  
   await browser.close();
 })();
