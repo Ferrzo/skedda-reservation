@@ -5,11 +5,11 @@ dotenv.config();
 const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-06-03`; // TODO: change this to auto date
 
 // Debug statements to log environment variables
-console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
-console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
-console.log("APP_DOMAIN:", process.env.APP_DOMAIN);
+// console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
+// console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
+// console.log("APP_DOMAIN:", process.env.APP_DOMAIN);
 
-console.log(platformUrl);
+// console.log(platformUrl);
 
 if (
   process.env.VERIFICATION_VALUE === undefined ||
@@ -34,7 +34,7 @@ const COOKIES = [
   },
 ];
 
-console.log(JSON.stringify(process.env.APP_DOMAIN));
+// console.log(JSON.stringify(process.env.APP_DOMAIN));
 
 (async () => {
   console.log("Starting the script...");
