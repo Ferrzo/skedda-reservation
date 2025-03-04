@@ -20,6 +20,12 @@ const COOKIES = [
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
+  if(process.env.VeRIFICATION_VALUE === undefined || process.env.APPLICATION_VALUE === undefined || process.env.DOMAIN === undefined) {
+    console.log("Please set the environment variables");
+    await browser.close();
+    return;
+  }
+
   // Set auth cookies
   await page.setCookie(...COOKIES);
 
