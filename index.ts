@@ -2,35 +2,40 @@ const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const platformUrl = `https://${process.env.DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-06-03`; // TODO: change this to auto date
+const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-06-03`; // TODO: change this to auto date
 
 // Debug statements to log environment variables
 console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
 console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
 console.log("DOMAIN:", process.env.DOMAIN);
+console.log("DOMAIN:", process.env.APP_DOMAIN);
+
 
 if (
   process.env.VERIFICATION_VALUE === undefined ||
   process.env.APPLICATION_VALUE === undefined ||
-  process.env.DOMAIN === undefined
+  process.env.APP_DOMAIN === undefined
 ) {
   console.log("Please set the environment variables");
   process.exit(1); // Exit the process if environment variables are not set
 }
 
+console.log(platformUrl);
+
 const COOKIES = [
   {
     name: "X-Skedda-RequestVerificationCookie",
     value: process.env.VERIFICATION_VALUE,
-    domain: process.env.DOMAIN,
+    domain: process.env.APP_DOMAIN,
   },
   {
     name: "X-Skedda-ApplicationCookie",
     value: process.env.APPLICATION_VALUE,
-    domain: process.env.DOMAIN,
+    domain: process.env.APP_DOMAIN,
   },
 ];
 (async () => {
+  console.log("Starting the script...");
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
