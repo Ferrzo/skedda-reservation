@@ -26,3 +26,6 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
           PUPPETEER_EXECUTABLE_PATH: "/usr/bin/google-chrome-stable"
+          VERIFICATION_VALUE: ${{ secrets.VERIFICATION_VALUE }}
+          APPLICATION_VALUE: ${{ secrets.APPLICATION_VALUE }}
+          DOMAIN: ${{ secrets.DOMAIN }}
