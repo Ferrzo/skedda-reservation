@@ -22,7 +22,7 @@ This project automates the booking process on the Skedda platform using Puppetee
 
 3. Create a `.env` file in the root directory and add the following environment variables:
     ```env
-    DOMAIN=actumdigital.skedda.com
+    APP_DOMAIN=<domain>
     VERIFICATION_VALUE=<your_verification_cookie_value>
     APPLICATION_VALUE=<your_application_cookie_value>
     ```

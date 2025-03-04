@@ -7,9 +7,9 @@ const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1
 // Debug statements to log environment variables
 console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
 console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
-console.log("DOMAIN:", process.env.DOMAIN);
-console.log("DOMAIN:", process.env.APP_DOMAIN);
+console.log("APP_DOMAIN:", process.env.APP_DOMAIN);
 
+console.log(platformUrl);
 
 if (
   process.env.VERIFICATION_VALUE === undefined ||
@@ -20,7 +20,6 @@ if (
   process.exit(1); // Exit the process if environment variables are not set
 }
 
-console.log(platformUrl);
 
 const COOKIES = [
   {
@@ -39,7 +38,7 @@ const COOKIES = [
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  if(process.env.VERIFICATION_VALUE === undefined || process.env.APPLICATION_VALUE === undefined || process.env.DOMAIN === undefined) {
+  if(process.env.VERIFICATION_VALUE === undefined || process.env.APPLICATION_VALUE === undefined || process.env.APP_DOMAIN === undefined) {
     console.log("Please set the environment variables");
     await browser.close();
     return;
