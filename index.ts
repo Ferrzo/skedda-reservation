@@ -16,7 +16,7 @@ if (
   process.env.APPLICATION_VALUE === undefined ||
   process.env.APP_DOMAIN === undefined
 ) {
-  console.log("Please set the environment variables");
+  console.log("Please set the environment variables!");
   process.exit(1); // Exit the process if environment variables are not set
 }
 
@@ -33,6 +33,9 @@ const COOKIES = [
     domain: process.env.APP_DOMAIN,
   },
 ];
+
+console.log(JSON.stringify(process.env.APP_DOMAIN));
+
 (async () => {
   console.log("Starting the script...");
   const browser = await puppeteer.launch({ headless: true });
