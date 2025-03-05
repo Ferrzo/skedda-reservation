@@ -9,6 +9,8 @@ jobs:
   run-puppeteer:
     runs-on: ubuntu-latest
 
+    environment: prod
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,8 +26,9 @@ jobs:
       - name: Run Puppeteer script
         run: node index.ts
         env:
+          CI: true
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
           PUPPETEER_EXECUTABLE_PATH: "/usr/bin/google-chrome-stable"
           VERIFICATION_VALUE: ${{ secrets.VERIFICATION_VALUE }}
           APPLICATION_VALUE: ${{ secrets.APPLICATION_VALUE }}
-          DOMAIN: ${{ secrets.DOMAIN }}
+          APP_DOMAIN: ${{ secrets.APP_DOMAIN }}
