@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-06-03`; // TODO: change this to auto date
+const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-03-06`; // TODO: change this to auto date
 
 // Debug statements to log environment variables
 // console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
@@ -151,7 +151,16 @@ const COOKIES = [
   console.log("Clicked on the final button to confirm the booking.");
 
   // Wait for the confirmation message
-  await page.waitForSelector(".alert.alert-success");
-  console.log("Booking confirmed!");
+
+  const flashMessage = await page.waitForSelector(".flash-message");
+  if (!flashMessage) {
+      console.log("Flash message not found!");
+      await browser.close();
+      return;
+    }
+  
+  console.log("Booking confirmed");
   await browser.close();
 })();
+
+  // Too easy...your booking is in! A confirmation email will hit your inbox shortly.
