@@ -31,7 +31,7 @@ This project automates the booking process on the Skedda platform using Puppetee
 
 To run the script, use the following command:
 ```sh
-node index.js
+node index.ts
 ```
 
 ## Debugging
@@ -41,6 +41,23 @@ To debug the script using Visual Studio Code:
 1. Open the project in Visual Studio Code.
 2. Set breakpoints in the `index.ts` file.
 3. Press `F5` to start debugging.
+
+## Environment Variables
+
+- `APP_DOMAIN`: The domain of the Skedda application.
+- `VERIFICATION_VALUE`: The value of the verification cookie.
+- `APPLICATION_VALUE`: The value of the application cookie.
+
+## Functions
+
+### `getNextDate()`
+Returns the date 7 days from now in `YYYY-MM-DD` format.
+
+### `getQueryParam(url, param)`
+Extracts the value of a query parameter from a URL.
+
+### `setQueryParam(url, param, value)`
+Sets the value of a query parameter in a URL.
 
 ## License
 

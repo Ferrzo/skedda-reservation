@@ -1,6 +1,5 @@
 const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
-const querystring = require("querystring");
 
 dotenv.config();
 
