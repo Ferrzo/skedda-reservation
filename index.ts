@@ -1,15 +1,10 @@
 const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
+const querystring = require("querystring");
+
 dotenv.config();
 
-const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-03-06`; // TODO: change this to auto date
-
-// Debug statements to log environment variables
-// console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
-// console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
-// console.log("APP_DOMAIN:", process.env.APP_DOMAIN);
-
-// console.log(platformUrl);
+const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewdate=2025-03-21`; // TODO: change this to auto date
 
 if (
   process.env.VERIFICATION_VALUE === undefined ||
@@ -19,7 +14,6 @@ if (
   console.log("Please set the environment variables!");
   process.exit(1); // Exit the process if environment variables are not set
 }
-
 
 const COOKIES = [
   {
@@ -34,14 +28,16 @@ const COOKIES = [
   },
 ];
 
-// console.log(JSON.stringify(process.env.APP_DOMAIN));
-
 (async () => {
   console.log("Starting the script...");
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  if(process.env.VERIFICATION_VALUE === undefined || process.env.APPLICATION_VALUE === undefined || process.env.APP_DOMAIN === undefined) {
+  if (
+    process.env.VERIFICATION_VALUE === undefined ||
+    process.env.APPLICATION_VALUE === undefined ||
+    process.env.APP_DOMAIN === undefined
+  ) {
     console.log("Please set the environment variables");
     await browser.close();
     return;
@@ -85,63 +81,20 @@ const COOKIES = [
     return;
   }
 
-  // Get all rows inside the modal container
-  const rows = await modalContainer.$$(".row");
-  if (rows.length < 2) {
-    console.log("Something wrong with the modal rows!");
-    await browser.close();
-    return;
-  }
+  // Get the updated URL
+  let updatedUrl = page.url();
 
-  // Select the second row which contains the time dropdown
-  const secondRow = rows[1];
+  // Extract the nbend parameter from the updated URL
+  let nbend = getQueryParam(updatedUrl, "nbend");
+  console.log("Original nbend parameter:", nbend);
 
-  // Find all dropdown buttons in the second row
-  const dropdowns = await secondRow.$$(".dropdown");
-  if (dropdowns.length < 2) {
-    console.log("Second dropdown not found!");
-    await browser.close();
-    return;
-  }
+  const newNbend = `${nbend.split("T")[0]}T18:00:00`; // Set the new time to 18:00
 
-  // Let's click on the second dropdown button
-  const drop1 = await dropdowns[1];
-  const button = await drop1.waitForSelector("button");
-  await button.click();
-  console.log("Clicked on the second dropdown button.");
+  updatedUrl = setQueryParam(updatedUrl, "nbend", newNbend);
+  console.log("Updated URL with new nbend parameter:", updatedUrl);
 
-  // Wait for the dropdown menu to appear
-  await page.waitForSelector(".dropdown-menu");
-
-  // Get all items in the dropdown
-  const dropdownItems = await drop1.$$(".dropdown-item");
-
-  // Find the proper time option
-  let timeOption = null;
-  for (const item of dropdownItems) {
-    const text = await page.evaluate((el) => el.textContent.trim(), item);
-    if (text.includes("5:00") || text.includes("17:00")) {
-      timeOption = button;
-      break;
-    }
-  }
-
-  if (timeOption) {
-    // Scroll to the time option
-    await timeOption.evaluate((el) => el.scrollIntoView({ block: "center" }));
-
-    // Wait a bit for the scroll to finish
-    await new Promise((r) => setTimeout(r, 200));
-
-    // Click the time option
-    await page.evaluate((el) => el.click(), timeOption);
-
-    console.log("Value 5:00 PM or 17:00 found and clicked.");
-  } else {
-    console.log("Value 5:00 PM or 17:00 not found!");
-    await browser.close();
-    return;
-  }
+  // Load the updated URL
+  await page.goto(updatedUrl, { waitUntil: "networkidle2" });
 
   //  Click the final button to confirm the booking
   const finalButton = await page.waitForSelector(
@@ -154,13 +107,24 @@ const COOKIES = [
 
   const flashMessage = await page.waitForSelector(".flash-message");
   if (!flashMessage) {
-      console.log("Flash message not found!");
-      await browser.close();
-      return;
-    }
-  
+    console.log("Flash message not found!");
+    await browser.close();
+    return;
+  }
+
   console.log("Booking confirmed");
   await browser.close();
 })();
 
-  // Too easy...your booking is in! A confirmation email will hit your inbox shortly.
+// Function to get query parameter value by name
+function getQueryParam(url, param) {
+  const urlParams = new URLSearchParams(new URL(url).search);
+  return urlParams.get(param) || "";
+}
+
+// Function to set query parameter value by name
+function setQueryParam(url, param, value) {
+  const urlObj = new URL(url);
+  urlObj.searchParams.set(param, value);
+  return urlObj.toString();
+}
