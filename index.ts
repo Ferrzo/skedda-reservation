@@ -30,7 +30,7 @@ const COOKIES = [
 
 (async () => {
   console.log("Starting the script...");
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
   if (
