@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewmapid=ef141b1ce5ab4970858d03c21568eb2a&viewdate=2025-03-06`; // TODO: change this to auto date
+const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewdate=2025-03-21`; // TODO: change this to auto date
 
 // Debug statements to log environment variables
 // console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
