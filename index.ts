@@ -4,7 +4,7 @@ const querystring = require("querystring");
 
 dotenv.config();
 
-const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewdate=2025-03-21`; // TODO: change this to auto date
+let platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewdate=${getNextDate()}`; 
 
 if (
   process.env.VERIFICATION_VALUE === undefined ||
@@ -38,7 +38,7 @@ const COOKIES = [
     process.env.APPLICATION_VALUE === undefined ||
     process.env.APP_DOMAIN === undefined
   ) {
-    console.log("Please set the environment variables");
+    console.error("Please set the environment variables");
     await browser.close();
     return;
   }
@@ -59,7 +59,7 @@ const COOKIES = [
     console.log("Green circle found, clicking...");
     await greenCircle.click();
   } else {
-    console.log("Green circle not found!");
+    console.error("Green circle not found!");
     await browser.close();
     return;
   }
@@ -76,7 +76,7 @@ const COOKIES = [
   // Find the modal container
   const modalContainer = await page.$(".modal.show .container-fluid");
   if (!modalContainer) {
-    console.log("Container-fluid not found!");
+    console.error("Container-fluid not found!");
     await browser.close();
     return;
   }
@@ -86,8 +86,6 @@ const COOKIES = [
 
   // Extract the nbend parameter from the updated URL
   let nbend = getQueryParam(updatedUrl, "nbend");
-  console.log("Original nbend parameter:", nbend);
-
   const newNbend = `${nbend.split("T")[0]}T18:00:00`; // Set the new time to 18:00
 
   updatedUrl = setQueryParam(updatedUrl, "nbend", newNbend);
@@ -107,7 +105,7 @@ const COOKIES = [
 
   const flashMessage = await page.waitForSelector(".flash-message");
   if (!flashMessage) {
-    console.log("Flash message not found!");
+    console.error("Flash message not found!");
     await browser.close();
     return;
   }
@@ -127,4 +125,11 @@ function setQueryParam(url, param, value) {
   const urlObj = new URL(url);
   urlObj.searchParams.set(param, value);
   return urlObj.toString();
+}
+
+function getNextDate() {
+  // Set date to Now + 7 days
+  const date = new Date();
+  date.setDate(date.getDate() + 7);
+  return date.toISOString().split("T")[0];
 }
