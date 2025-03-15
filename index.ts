@@ -4,13 +4,6 @@ dotenv.config();
 
 const platformUrl = `https://${process.env.APP_DOMAIN}/booking?viewdate=2025-03-21`; // TODO: change this to auto date
 
-// Debug statements to log environment variables
-// console.log("VERIFICATION_VALUE:", process.env.VERIFICATION_VALUE);
-// console.log("APPLICATION_VALUE:", process.env.APPLICATION_VALUE);
-// console.log("APP_DOMAIN:", process.env.APP_DOMAIN);
-
-// console.log(platformUrl);
-
 if (
   process.env.VERIFICATION_VALUE === undefined ||
   process.env.APPLICATION_VALUE === undefined ||
@@ -33,8 +26,6 @@ const COOKIES = [
     domain: process.env.APP_DOMAIN,
   },
 ];
-
-// console.log(JSON.stringify(process.env.APP_DOMAIN));
 
 (async () => {
   console.log("Starting the script...");
@@ -120,7 +111,7 @@ const COOKIES = [
   let timeOption = null;
   for (const item of dropdownItems) {
     const text = await page.evaluate((el) => el.textContent.trim(), item);
-    if (text.includes("5:00") || text.includes("17:00")) {
+    if (text.includes("6:00") || text.includes("18:00")) {
       timeOption = button;
       break;
     }
